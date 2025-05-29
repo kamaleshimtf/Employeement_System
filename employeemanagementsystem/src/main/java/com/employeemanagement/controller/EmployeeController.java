@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/employee") 
 public class EmployeeController {
 
-    private Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+    private final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
     @Autowired
     private EmployeeService employeeService;
 
@@ -28,30 +28,34 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeEntity> getEmployees() {
+        logger.info("Inside controller: getting all employees details");
         return employeeService.getAllEmployees();
     }
 
     @GetMapping(path = "/{employeeId}")
     public ResponseEntity<EmployeeEntity> getEmployee(@PathVariable Long employeeId) {
+        logger.info("Inside controller: getting all employees details with id: {}", employeeId);
         return ResponseEntity.ok(employeeService.getEmployee(employeeId));
     }
 
 
     @PutMapping(path = "/{employeeId}")
     public ResponseEntity<EmployeeEntity> updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeEntity employee) {
+        logger.info("Inside controller: updating employee: {}", employeeId);
         EmployeeEntity employeeEntity = employeeService.updateEmployee(employeeId, employee);
         return ResponseEntity.status(HttpStatus.OK).body(employeeEntity);
     }
 
     @DeleteMapping(path = "/{employeeId}")
     public ResponseEntity<EmployeeEntity> deleteEmployee(@PathVariable Long employeeId) {
+        logger.info("Inside controller: deleting employee: {}", employeeId);
         EmployeeEntity employeeEntity = employeeService.deleteEmployee(employeeId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(employeeEntity);
     }
 
     @GetMapping(path = "department/{departmentName}")
     public List<EmployeeEntity> getEmployeeByDepartment(@PathVariable String departmentName) {
-        List<EmployeeEntity> departmentEntity = employeeService.searchDepartment(departmentName);
-        return departmentEntity;
+        logger.info("Inside controller: getting all employees by department: {}", departmentName);
+        return employeeService.searchDepartment(departmentName);
     }
 }

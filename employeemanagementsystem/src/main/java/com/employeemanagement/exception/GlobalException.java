@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalException {
 
-    ErrorResponse errorResponse = new ErrorResponse();
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(ex.getBindingResult().getFieldError().getDefaultMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -21,7 +20,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> toNotFoundException(NotFoundException exception) {
+    public ResponseEntity<ErrorResponse> toNotFoundException(NotFoundException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -29,7 +29,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Object> toConflictException(ConflictException exception) {
+    public ResponseEntity<ErrorResponse> toConflictException(ConflictException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
@@ -37,7 +38,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(NoContentException.class)
-    public ResponseEntity<Object> toNoContentException(NoContentException exception) {
+    public ResponseEntity<ErrorResponse> toNoContentException(NoContentException exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
